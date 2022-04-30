@@ -1,11 +1,15 @@
-var jogador = null;
-
+var jogador, vencedor = null;
 var jogadorSelecionado = document.getElementById('jogador-selecionado');
+var vencedorSelecionado = document.getElementById('vencedor-selecionado');
 
 mudarJogador('X');
 
 function escolherQuadrado(id) {
-    var quadrado =  document.getElementById(id);
+    if(vencedor !== null) {
+        return;
+    }
+
+    var quadrado = document.getElementById(id);
     if(quadrado.innerHTML !== '-') {
         return;
     }
@@ -20,6 +24,7 @@ function escolherQuadrado(id) {
     }
 
     mudarJogador(jogador);
+    checaVencedor();
 }
 
 function mudarJogador(valor) {
@@ -27,25 +32,98 @@ function mudarJogador(valor) {
     jogadorSelecionado.innerHTML = jogador;
 }
 
-function vencedorCheck() {
-    var quadrado1 = document.getElementsByID('1');
-    var quadrado2 = document.getElementsByID('2');
-    var quadrado3 = document.getElementsByID('3');
-    var quadrado4 = document.getElementsByID('4');
-    var quadrado5 = document.getElementsByID('5');
-    var quadrado6 = document.getElementsByID('6');
-    var quadrado7 = document.getElementsByID('7');
-    var quadrado8 = document.getElementsByID('8');
-    var quadrado9 = document.getElementsByID('9');
+function checaVencedor() {
+    var quadrado1 = document.getElementById(1);
+    var quadrado2 = document.getElementById(2);
+    var quadrado3 = document.getElementById(3);
+    var quadrado4 = document.getElementById(4);
+    var quadrado5 = document.getElementById(5);
+    var quadrado6 = document.getElementById(6);
+    var quadrado7 = document.getElementById(7);
+    var quadrado8 = document.getElementById(8);
+    var quadrado9 = document.getElementById(9);
+
+    if (checaSequencia(quadrado1, quadrado2, quadrado3)) {
+        mudarCorQuadrado(quadrado1, quadrado2, quadrado3);
+        mudarVencedor(quadrado1);
+        return;
+    }
+
+    if (checaSequencia(quadrado4, quadrado5, quadrado6)) {
+        mudarCorQuadrado(quadrado4, quadrado5, quadrado6);
+        mudarVencedor(quadrado4);
+        return;
+    }
+
+    if (checaSequencia(quadrado7, quadrado8, quadrado9)) {
+        mudarCorQuadrado(quadrado7, quadrado8, quadrado9);
+        mudarVencedor(quadrado7);
+        return;
+    }
+
+    if (checaSequencia(quadrado1, quadrado4, quadrado7)) {
+        mudarCorQuadrado(quadrado1, quadrado4, quadrado7);
+        mudarVencedor(quadrado1);
+        return;
+    }
+
+    if (checaSequencia(quadrado2, quadrado5, quadrado8)) {
+        mudarCorQuadrado(quadrado2, quadrado5, quadrado8);
+        mudarVencedor(quadrado2);
+        return;
+    }
+
+    if (checaSequencia(quadrado3, quadrado6, quadrado9)) {
+        mudarCorQuadrado(quadrado3, quadrado6, quadrado9);
+        mudarVencedor(quadrado3);
+        return;
+    }
+
+    if (checaSequencia(quadrado1, quadrado5, quadrado9)) {
+        mudarCorQuadrado(quadrado1, quadrado5, quadrado9);
+        mudarVencedor(quadrado1);
+        return;
+    }
+
+    if (checaSequencia(quadrado3, quadrado5, quadrado7)) {
+        mudarCorQuadrado(quadrado3, quadrado5, quadrado7);
+        mudarVencedor(quadrado3);
+        
+    }
     
 }
 
-function sequenciaCheck(quadrado1, quadrado2, quadrado3) {
+function mudarVencedor(quadrado) {
+    vencedor = quadrado.innerHTML;
+    vencedorSelecionado.innerHTML = vencedor;
+}
+
+function mudarCorQuadrado(quadrado1, quadrado2, quadrado3) {
+    quadrado1.style.background = 'lightgreen';
+    quadrado2.style.background = 'lightgreen';
+    quadrado3.style.background = 'lightgreen';
+};
+
+function checaSequencia(quadrado1, quadrado2, quadrado3) {
     var eIgual = false;
 
-    if(quadrado1.innerHTML != '-' && quadrado1.innerHTML === quadrado2.innerHTML && quadrado2.innerHTML === quadrado3.innerHTML) {
+    if(quadrado1.innerHTML !== '-' && quadrado1.innerHTML === quadrado2.innerHTML && quadrado2.innerHTML === quadrado3.innerHTML) {
         eIgual = true;
     }
 
     return eIgual;
+}
+
+function reiniciar() {
+    vencedor = null;
+    vencedorSelecionado.innerHTML = '';
+
+    for (var i = 1; i <= 9; i++){
+        var quadrado = document.getElementById(i);
+        quadrado.style.background = '#e7e5e5'
+        quadrado.style.color = '#e7e5e5'
+        quadrado.innerHTML = '-';
+    }
+
+    mudarJogador('X');
 }
